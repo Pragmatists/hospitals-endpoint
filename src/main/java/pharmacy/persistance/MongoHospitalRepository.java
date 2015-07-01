@@ -1,9 +1,8 @@
 package pharmacy.persistance;
 
-import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
@@ -23,6 +22,7 @@ public class MongoHospitalRepository implements HospitalRepository {
         List<Hospital> hospitals = mongoSpringDataHospitalRepository.findAll();
         return hospitals.stream()
                 .map(hospital -> new HospitalEndpoint.HospitalJson(
+                        hospital.id,
                         hospital.name,
                         hospital.address,
                         hospital.phone,

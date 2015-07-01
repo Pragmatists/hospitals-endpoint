@@ -21,13 +21,15 @@ public class HospitalEndpoint {
     }
 
     public static class HospitalJson {
+        public String id;
         public String name;
         public String address;
         public String phone;
         public String www;
         public String type;
 
-        public HospitalJson(String name, String address, String phone, String www, String type) {
+        public HospitalJson(String id, String name, String address, String phone, String www, String type) {
+            this.id = id;
             this.name = name;
             this.address = address;
             this.phone = phone;
