@@ -1,11 +1,11 @@
 package pharmacy.controller;
 
-import static com.jayway.restassured.RestAssured.*;
-import static org.hamcrest.CoreMatchers.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
@@ -15,29 +15,22 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.jayway.restassured.RestAssured;
 
 import pharmacy.DemoApplication;
+import pharmacy.persistance.PharmacyRepository;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = DemoApplication.class)
-@WebIntegrationTest({"server.port=0"})
-@ActiveProfiles("dev")
-public class HospitalEndpointTest {
+@ActiveProfiles("mongo")
+public class PharmacyRepositoryTest {
 
-    @Value("${local.server.port}")
-    int port;
 
-    @Before
-    public void setUp() throws Exception {
-        RestAssured.port = port;
-    }
+    @Autowired
+    PharmacyRepository pharmacyRepository;
 
     @Test
-    public void name() {
+    public void get_pharmacies() {
 
-        when()
-                .get("hospital")
-        .then()
-                .statusCode(200).log().body()
-                .body("name", hasItems("Centrum Medyczne \"Żelazna\""));
+        PharmacyEndpoint.PharmaciesJson pharmaciesJson = pharmacyRepository.get();
+        assertThat(pharmaciesJson).isNotNull();
 
     }
 

@@ -16,7 +16,7 @@ public class MongoConfig {
     @Bean
     MongoDbFactory mongoDbFactory() throws Exception {
         UserCredentials userCredentials = new UserCredentials("admin", "admin!");
-        return new SimpleMongoDbFactory(new MongoClient("ds053972.mongolab.com", 53972), "hospitals", userCredentials);
+        return new SimpleMongoDbFactory(new MongoClient("ds049548.mongolab.com", 49548), "pharmacies", userCredentials);
     }
 
     public

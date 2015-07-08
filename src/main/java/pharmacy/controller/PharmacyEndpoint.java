@@ -1,37 +1,58 @@
 package pharmacy.controller;
 
-import static java.util.Arrays.*;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import pharmacy.adapter.PharmaciesAdapter;
+import pharmacy.persistance.PharmacyRepository;
 
 @RestController
 public class PharmacyEndpoint {
 
-    private final PharmaciesAdapter pharmaciesAdapter;
-
     @Autowired
-    public PharmacyEndpoint(PharmaciesAdapter pharmaciesAdapter) {
-        this.pharmaciesAdapter = pharmaciesAdapter;
+    PharmacyRepository repository;
+
+    @RequestMapping(value = "pharmacies", method = RequestMethod.GET, produces = "application/json")
+    public PharmaciesJson search() {
+       return repository.get();
     }
 
-    @RequestMapping(value = "pharmacy", method = RequestMethod.GET, produces = "application/json")
-    public List<PharmacyJson> search() {
-        return pharmaciesAdapter.search("Warszawa");
+    @Document(collection = "pharmacy")
+    public static class PharmaciesJson {
+        @Id
+        public String id;
+        public Result result;
     }
 
-    public static class PharmacyJson {
-        public String name;
+    public static class Result {
+        public List<String> featureMemberPropertyKey;
+        public List<Member> featureMemberList;
+    }
 
-        public PharmacyJson(String name) {
-            this.name = name;
-        }
+    public static class Member {
+        public Geometry geometry;
+        public List<Property>properties;
+    }
+
+    public static class Geometry {
+        public String type;
+        public List<Coordinate> coordinates;
+    }
+
+    public static class Coordinate {
+        public String latitude;
+        public String longitude;
+    }
+
+    public static class Property {
+        public String value;
+        public String key;
     }
 }
+
+

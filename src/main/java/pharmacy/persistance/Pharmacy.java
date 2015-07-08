@@ -3,8 +3,8 @@ package pharmacy.persistance;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "hospitals")
-public class Hospital {
+@Document(collection = "pharmacy")
+public class Pharmacy {
     @Id
     public String id;
 
